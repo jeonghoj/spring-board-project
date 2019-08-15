@@ -3,43 +3,74 @@ package jeonghoj.boardproject;
 import java.time.LocalDateTime;
 
 public class Board {
-    private int boardId;
-    private String boardTitle;
-    private String boardContent;
-    private LocalDateTime boardDatetime;
-    private int boardMemberId;
-    private String boardMemberName;
+    private int id;
+    private String title;
+    private String content;
+    private LocalDateTime datetime;
+    private int memberId;
+    private String memberName;
+    private int hit;
 
-    public Board(String boardTitle, String boardContent, LocalDateTime boardDatetime, int boardMemberId, String boardMemberName) {
-        this.boardTitle = boardTitle;
-        this.boardContent = boardContent;
-        this.boardDatetime = boardDatetime;
-        this.boardMemberId = boardMemberId;
-        this.boardMemberName = boardMemberName;
+//  Get Board Detail
+
+    public Board(int id, String title, String content, LocalDateTime datetime, int memberId, String memberName, int hit) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.datetime = datetime;
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.hit = hit;
     }
 
-    public void setBoardId(int boardId) {
-        this.boardId = boardId;
+//  Get Board Title Only
+
+    public Board(int id, String title, LocalDateTime datetime, int memberId, String memberName, int hit) {
+        this.id = id;
+        this.title = title;
+        this.datetime = datetime;
+        this.memberId = memberId;
+        this.memberName = memberName;
+        this.hit = hit;
     }
 
-    public String getBoardTitle() {
-        return boardTitle;
+    public int getId() {
+        return id;
     }
 
-    public String getBoardContent() {
-        return boardContent;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public LocalDateTime getBoardDatetime() {
-        return boardDatetime;
+    public void setMemberId(int memberId) {
+        this.memberId = memberId;
     }
 
-    public int getBoardMemberId() {
-        return boardMemberId;
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
     }
 
-    public String getBoardMemberName() {
-        return boardMemberName;
+    public String getTitle() {
+        return title;
     }
 
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDateTime getDatetime() {
+        return datetime;
+    }
+
+    public int getMemberId() {
+        return memberId;
+    }
+
+    public String getMemberName() {
+        return memberName;
+    }
+
+    public int getHit() {
+        return hit;
+    }
 }
