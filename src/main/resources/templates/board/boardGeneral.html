@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/commonHead" />
+    <title>게시판</title>
+</head>
+<body>
+<th:block th:replace="fragments/navBar" />
+
+<div class="container">
+    <div class="row">
+        <div class="container mt-5"><h1>게시판</h1></div>
+        <div class="container mt-4">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="w-10">글 번호</th>
+                        <th class="w-50" >제목</th>
+                        <th class="w-20">작성자</th>
+                        <th class="w-20">작성 일시</th>
+<!--                        <th class="w-5">조회 수</th>-->
+                    </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board : ${boards}">
+                    <td th:text="${board.idx}">1</td>
+                    <td><a th:href="'/general/'+${board.idx}" th:text="${board.title}">테스트</a></td>
+                    <td th:text="${board.user.name}">null</td>
+                    <td th:text="${ #temporals.format(board.createdDate,'MM-dd HH:mm')}">날짜</td>
+<!--                    <td th:text="${board.hit}">날짜</td>-->
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="container mt-md-3">
+            <div class="col text-right">
+                <a href="/general/create"><button class="btn btn-dark">작성</button></a>
+            </div>
+        </div>
+        <div class="container mt-md-3">
+            <!-- Pagination -->
+            <nav aria-label="Page navigation" style="text-align:center;">
+                <ul class="pagination justify-content-center" th:with="startNumber=${T(Math).floor(boards.number/10)}*10+1, endNumber=(${boards.totalPages} > ${startNumber}+9) ? ${startNumber}+9 : ${boards.totalPages}">
+                    <li class="page-item"><a class="page-link" aria-label="Previous" href="/general?page=1">&laquo;</a></li>
+                    <li class="page-item" th:style="${boards.first} ? 'display:none'">
+                        <a class="page-link" th:href="@{/general(page=${boards.number})}">이전</a>
+                    </li>
+
+                    <li class="page-item" th:each="page :${#numbers.sequence(startNumber, endNumber)}" th:class="(${page} == ${boards.number}+1) ? 'active'">
+                        <a class="page-link" th:href="@{/general(page=${page})}" th:text="${page}"><span class="sr-only"></span></a>
+                    </li>
+
+                    <li class="page-item" th:style="${boards.last} ? 'display:none'">
+                        <a class="page-link" th:href="@{/general(page=${boards.number}+2)}">다음</a>
+                    </li>
+                    <li class="page-item"><a class="page-link" aria-label="Next" th:href="@{/general(page=${boards.totalPages})}">&raquo;</a></li>
+                </ul>
+            </nav>
+            <!-- /Pagination -->
+        </div>
+    </div>
+</div>
+</body>
+</html>

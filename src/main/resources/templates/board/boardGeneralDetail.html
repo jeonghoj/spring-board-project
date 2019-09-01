@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragments/commonHead" />
+    <title>게시판</title>
+</head>
+<body>
+<th:block th:replace="fragments/navBar" />
+<div class="container">
+    <div class="row">
+        <div class="container mt-5"><h1><a th:href="@{/general}">게시판</a></h1></div>
+        <div class="container mt-4">
+            <div class="form-group">
+                <h2 id="boardTitle" th:text="${board.title}">제목</h2>
+            </div>
+            <hr>
+            <div class="form-group">
+                <p id="boardContent" th:utext="${board.content}">컨텐츠</p>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col">
+                    <!--            일치하는 유저면-->
+                    <div class="col"><a href="/general"><i class="fas fa-bars fa-2x" style="color: black"></i></a></div>
+                </div>
+
+                <th:block th:if="${author}">
+                    <div class="col text-right">
+                        <!-- TODO 글 작성자와 현재 접속 유저가 일치하면 메뉴가 보이게 설정 -->
+                        <!-- 수정 -->
+                        <a th:href="'/general/update/'+${board.idx}"><button class="btn btn-dark">수정</button></a>
+
+                        <!-- 삭제 -->
+                        <a th:href="'/general/delete/'+${board.idx}"><button class="btn btn-dark">삭제</button></a>
+                    </div>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
