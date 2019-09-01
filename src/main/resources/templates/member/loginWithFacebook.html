@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"
 	  xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="https://www.thymeleaf.org"
-	  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	  xmlns:th="https://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<meta name="author" content="Kodinger">
@@ -94,13 +93,6 @@
 	function social_login(){
 		location.href= "/oauth2/authorization/facebook";
 	}
-
-    $.get("/user", function(data) {
-        console.log(data);
-        $("#user").html(data.userAuthentication.details.name);
-        $(".unauth").hide();
-        $(".auth").show();
-    });
 </script>
 
 <script src="../../static/js/my-login.js"></script>

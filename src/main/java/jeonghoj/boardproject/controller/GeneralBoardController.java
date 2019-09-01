@@ -7,7 +7,6 @@ import jeonghoj.boardproject.domain.dto.BoardDto;
 import jeonghoj.boardproject.domain.dto.BoardUpdateDto;
 import jeonghoj.boardproject.repository.GeneralBoardRepository;
 import jeonghoj.boardproject.service.GeneralBoardService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @Controller
 public class GeneralBoardController {
