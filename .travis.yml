@@ -1,0 +1,23 @@
+language: java
+jdk:
+  - openjdk8
+
+branches:
+  only:
+    - master
+
+# Travis CI 서버의 Home
+# 해당 디렉토리를 캐시하여 중복된 의존성은 다시 받지 않도록 설정
+cache:
+  directories:
+    - '$HOME/.gradle'
+
+script: "./gradlew clean build"
+
+# CI 실행 완료시 개인 슬랙으로 알람
+notifications:
+  email: false
+  slack:
+    secure: xCFT6/Zs0C2/Z4CtKJRsKbaKiwqb+gw+AFBHGkREpMXlFOP9OXoIPTBP6kyNPAxmzxSBKuQbE0qIzM7mW+GrEVopByBdOtIYIaHoyrq2fubT4vThRmtrD3oKGNm1nMrqxnydTfJiZAjxRNw03qxS4eyJV+/d/Yg9JDqYVr2wxXA2wpLTqZR7g7CLh2b1jMxHDrHrEBvvz+4ZDZrs4NOJCrTpXJEulcvuXXUBE7rfYEife19fil2bW3jcATeg8VWwKZqhzoUAL3bc6YcBYNwYjQXwmZ6Gxt6FsAjuVgo5OCwlLl7d/4U537/84UkhV0yqfK7MjZc2i2pCKbO1+ZrgkcLumb53O6+ETcjY1z4xvnIEOLIPQGTpurVprlDMZ14gWexwW/ynNEV/AbkpTPgKuoJ2NIYm2keHuGBSVa64CUaep1BWrr51Qe9dnnlT8akiugBB3qtGaLzUAZoXH7jNSJDWzjAyuVL/vVGqCCG0QID7FmAP92VorSveaAzIq0ggZb4Qmv2iu1FbjPHO8Mhw3xWy9MZyNNJ7zmIOJCti4Ie9EpCGgLFSn94ND+KTY2eSteyb9iZcU5tIrATHawMp/IAUMnsnX5Pxi6tI2VqD/AHRhMPah+wRJP+vYhFW5i18xro2neitM8JoHjbW9KEqhq4SRwT1FIZ8oD5nssQ9IlU=
+  on_success: always
+  on_failure: always
