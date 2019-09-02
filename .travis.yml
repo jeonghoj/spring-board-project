@@ -13,6 +13,9 @@ branches:
 #  directories:
 #    - '$HOME/.gradle'
 
+# 설정파일 복호화
+before_script: "openssl aes-256-cbc -K $encrypted_ae2200102cdb_key -iv $encrypted_ae2200102cdb_iv -in ./src/main/resources/application.yml.enc -out ./src/main/resources/application.yml -d"
+
 script: "./gradlew clean build"
 
 # CI 실행 완료시 개인 슬랙으로 알람
