@@ -8,9 +8,10 @@ branches:
 
 # Travis CI 서버의 Home
 # 해당 디렉토리를 캐시하여 중복된 의존성은 다시 받지 않도록 설정
-cache:
-  directories:
-    - '$HOME/.gradle'
+
+#cache:
+#  directories:
+#    - '$HOME/.gradle'
 
 script: "./gradlew clean build"
 
