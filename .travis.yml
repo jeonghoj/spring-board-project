@@ -4,6 +4,9 @@ jdk:
 branches:
   only:
   - master
+cache:
+  directories:
+    - '$HOME/.gradle'
 script: "./gradlew clean build"
 notifications:
   email: false
@@ -21,12 +24,25 @@ before_deploy:
   - mv spring-board-project.zip deploy/spring-board-project.zip
 
 deploy:
-  provider: s3
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  bucket: spring-communityboard-deploy
-  region: ap-northeast-2
-  skip_cleanup: true
-  on:
-    repo: jeonghoj/spring-board-project
-    branch: master
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: spring-communityboard-deploy
+    region: ap-northeast-2
+    skip_cleanup: true
+    on:
+      repo: jeonghoj/spring-board-project
+      branch: master
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: spring-communityboard-deploy
+    key: spring-board-project.zip # 전달된 zip 파일
+    bundle_type: zip
+    application: spring-board-project # 웹 콘솔에서 등록한 CodeDeploy 어플리케이션
+    deployment_group: spring-board-project-group # 웹 콘솔에서 등록한 CodeDeploy 배포 그룹
+    region: ap-northeast-2
+    on:
+      repo: jeonghoj/spring-board-project
+      branch: master
