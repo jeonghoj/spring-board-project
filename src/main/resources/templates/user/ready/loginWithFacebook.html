@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<title>My Login Page</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel="stylesheet" type="text/css" href="../../static/css/my-login.css">
+	<link rel="stylesheet" type="text/css" href="../../../static/css/my-login.css">
 </head>
 
 <body class="my-login-page">
@@ -72,7 +72,7 @@
 								<input type="submit" id="userLoginBtn" class="btn btn-primary float-right" value="로그인">
 							</div>
 							<br><br>
-							<button class="btn btn-primary" onclick="social_login()">facebook</button>
+<!--							<button class="btn btn-primary" onclick="social_login()">facebook</button>-->
 							<div th:if="${param.logout}">
 								You have been logged out.
 							</div>
@@ -95,7 +95,7 @@
 	}
 </script>
 
-<script src="../../static/js/my-login.js"></script>
+<script src="../../../static/js/my-login.js"></script>
 
 </body>
 </html>

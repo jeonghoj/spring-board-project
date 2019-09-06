@@ -6,7 +6,7 @@ branches:
   - master
 cache:
   directories:
-    - '$HOME/.gradle'
+  - "$HOME/.gradle"
 script: "./gradlew clean build"
 notifications:
   email: false
@@ -14,37 +14,33 @@ notifications:
     secure: xCFT6/Zs0C2/Z4CtKJRsKbaKiwqb+gw+AFBHGkREpMXlFOP9OXoIPTBP6kyNPAxmzxSBKuQbE0qIzM7mW+GrEVopByBdOtIYIaHoyrq2fubT4vThRmtrD3oKGNm1nMrqxnydTfJiZAjxRNw03qxS4eyJV+/d/Yg9JDqYVr2wxXA2wpLTqZR7g7CLh2b1jMxHDrHrEBvvz+4ZDZrs4NOJCrTpXJEulcvuXXUBE7rfYEife19fil2bW3jcATeg8VWwKZqhzoUAL3bc6YcBYNwYjQXwmZ6Gxt6FsAjuVgo5OCwlLl7d/4U537/84UkhV0yqfK7MjZc2i2pCKbO1+ZrgkcLumb53O6+ETcjY1z4xvnIEOLIPQGTpurVprlDMZ14gWexwW/ynNEV/AbkpTPgKuoJ2NIYm2keHuGBSVa64CUaep1BWrr51Qe9dnnlT8akiugBB3qtGaLzUAZoXH7jNSJDWzjAyuVL/vVGqCCG0QID7FmAP92VorSveaAzIq0ggZb4Qmv2iu1FbjPHO8Mhw3xWy9MZyNNJ7zmIOJCti4Ie9EpCGgLFSn94ND+KTY2eSteyb9iZcU5tIrATHawMp/IAUMnsnX5Pxi6tI2VqD/AHRhMPah+wRJP+vYhFW5i18xro2neitM8JoHjbW9KEqhq4SRwT1FIZ8oD5nssQ9IlU=
   on_success: always
   on_failure: always
+before_deploy:
+- zip -r spring-board-project *
+- mkdir -p deploy
+- mv spring-board-project.zip deploy/spring-board-project.zip
+deploy:
+- provider: s3
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
+  bucket: spring-communityboard-deploy
+  region: ap-northeast-2
+  skip_cleanup: true
+  local_dir: deploy
+  on:
+    repo: jeonghoj/spring-board-project
+    branch: master
+- provider: codedeploy
+  access_key_id: "$AWS_ACCESS_KEY"
+  secret_access_key: "$AWS_SECRET_KEY"
+  bucket: spring-communityboard-deploy
+  region: ap-northeast-2
+  key: spring-board-project.zip
+  bundle_type: zip
+  application: spring-board-project
+  deployment_group: spring-board-project-group
+  on:
+    repo: jeonghoj/spring-board-project
+    branch: master
 before_install:
 - openssl aes-256-cbc -K $encrypted_d0993b46a014_key -iv $encrypted_d0993b46a014_iv
   -in application.yml.enc -out ./src/main/resources/application.yml -d
-
-before_deploy:
-  - zip -r spring-board-project *
-  - mkdir -p deploy
-  - mv spring-board-project.zip deploy/spring-board-project.zip
-
-deploy:
-  - provider: s3
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SECRET_KEY
-    bucket: spring-communityboard-deploy
-    region: ap-northeast-2
-    skip_cleanup: true
-    local_dir: deploy
-    on:
-      repo: jeonghoj/spring-board-project
-      branch: master
-
-  - provider: codedeploy
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SECRET_KEY
-    bucket: spring-communityboard-deploy
-    region: ap-northeast-2
-    key: spring-board-project.zip # 전달된 zip 파일
-    bundle_type: zip
-    application: spring-board-project # 웹 콘솔에서 등록한 CodeDeploy 어플리케이션
-    deployment_group: spring-board-project-group # 웹 콘솔에서 등록한 CodeDeploy 배포 그룹
-
-    on:
-      repo: jeonghoj/spring-board-project
-      branch: master

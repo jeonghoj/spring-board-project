@@ -10,7 +10,7 @@ public interface GeneralBoardTitleOnly {
 
     interface UserInfo {
         Long getIdx();
-        String getName();
+        String getUsername();
     }
 }
 

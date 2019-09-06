@@ -1,11 +1,16 @@
 package jeonghoj.boardproject.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
+import javax.sql.DataSource;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -16,28 +21,45 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers("/general/create","/general/update/**","/general/delete/**").authenticated()
-                .antMatchers("/","/general/**","/login","/oauth2/**","/static/**").permitAll()
+                .antMatchers("/","/general/**","/login","/oauth2/**","/static/**","/register","/js/**","/css/**","/img/**").permitAll()
                 .anyRequest().authenticated()
             .and()
-                .oauth2Login()
-                .defaultSuccessUrl("/loginSuccess")
-                .failureUrl("/loginFailure")
-            .and()
                 .headers().frameOptions().disable()
-            .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+//            .and()
+//                .exceptionHandling()
+//                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
             .and()
                 .formLogin()
-                .successForwardUrl("/")
+                .loginPage("/login")
+                .loginProcessingUrl("/perform_login")
+                .failureUrl("/login?error")
+                .defaultSuccessUrl("/",true)
             .and()
                 .logout()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true)
+//                .logoutSuccessHandler(logoutSuccessHandler)
             .and()
                 .addFilterBefore(filter, CsrfFilter.class)
                 .csrf().disable();
     }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth, DataSource dataSource) throws Exception
+    {
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery("select username,password,enabled from user where username=?")
+                .authoritiesByUsernameQuery("select username,authority from user where username=?")
+                .passwordEncoder(new BCryptPasswordEncoder());
+//                .withUser(user.username("user").password("password").roles("USER"));
+    }
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }

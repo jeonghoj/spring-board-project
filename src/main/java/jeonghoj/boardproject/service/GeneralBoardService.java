@@ -7,6 +7,7 @@ import jeonghoj.boardproject.domain.dto.BoardUpdateDto;
 import jeonghoj.boardproject.domain.enums.BoardType;
 import jeonghoj.boardproject.domain.projection.GeneralBoardTitleOnly;
 import jeonghoj.boardproject.repository.GeneralBoardRepository;
+import jeonghoj.boardproject.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -51,7 +52,7 @@ public class GeneralBoardService {
 
     public Board updateBoardInfo(Long idx, User user) {
         Board board = generalBoardRepository.getOne(idx);
-        if(!board.getUser().getIdx().equals(user.getIdx())){
+        if(!board.getUser().getUsername().equals(user.getUsername())){
             return null;
         }
         return board;
@@ -59,8 +60,7 @@ public class GeneralBoardService {
 
     public Board updateBoard(BoardUpdateDto boardUpdateDto, User user) {
         Board updateBoard = generalBoardRepository.getOne(boardUpdateDto.getIdx());
-        System.out.println(updateBoard.getTitle());
-        if(!user.getIdx().equals(updateBoard.getUser().getIdx())){
+        if(!user.getUsername().equals(updateBoard.getUser().getUsername())){
             return null;
         }
         updateBoard.update(boardUpdateDto);
