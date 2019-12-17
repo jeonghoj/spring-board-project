@@ -7,6 +7,8 @@ import jeonghoj.boardproject.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private Logger logger = LoggerFactory.getLogger(UserService.class);
     @Autowired
@@ -44,4 +46,12 @@ public class UserService {
         return (userRepository.findByUsername(username).getUsername().isEmpty());
     }
 
+    @Override
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if(user == null){
+            throw new UsernameNotFoundException(username);
+        }
+        return user;
+    }
 }

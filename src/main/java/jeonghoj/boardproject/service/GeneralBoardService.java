@@ -7,7 +7,6 @@ import jeonghoj.boardproject.domain.dto.BoardUpdateDto;
 import jeonghoj.boardproject.domain.enums.BoardType;
 import jeonghoj.boardproject.domain.projection.GeneralBoardTitleOnly;
 import jeonghoj.boardproject.repository.GeneralBoardRepository;
-import jeonghoj.boardproject.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;

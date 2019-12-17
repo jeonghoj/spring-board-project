@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <nav th:fragment="navBar" class="navbar navbar-expand-md navbar-dark bg-dark">
     <a class="navbar-brand abs" href="/general">Logo</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNavbar">
@@ -21,13 +22,10 @@
             </li>
             <!-- 로그인 유저 체크> -->
             <li class="nav-item">
-                <!--/*@thymesVar id="user" type="jeonghoj.boardproject.domain.User"*/-->
-                <th:block th:if="${user}">
-                    <a class="nav-link" href="/logout"><button class="btn btn-primary">로그아웃</button></a>
-                </th:block>
-                <th:block th:unless="${user}">
-                    <a class="nav-link" href="/login"><button class="btn btn-primary">로그인</button></a>
-                </th:block>
+                <a class="nav-link" href="/logout" sec:authorize="isAuthenticated()">
+                    <button class="btn btn-primary">로그아웃</button></a>
+                <a class="nav-link" href="/login" sec:authorize="isAnonymous()">
+                    <button class="btn btn-primary">로그인</button></a>
             </li>
         </ul>
     </div>

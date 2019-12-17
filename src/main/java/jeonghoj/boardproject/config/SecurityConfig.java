@@ -1,5 +1,6 @@
 package jeonghoj.boardproject.config;
 
+import jeonghoj.boardproject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,14 +16,17 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    UserService userService;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         CharacterEncodingFilter filter = new CharacterEncodingFilter();
         http
             .authorizeRequests()
                 .antMatchers("/general/create","/general/update/**","/general/delete/**").authenticated()
-                .antMatchers("/","/general/**","/login","/oauth2/**","/static/**","/register","/js/**","/css/**","/img/**").permitAll()
-                .anyRequest().authenticated()
+//                .antMatchers("/","/general/**","/login","/oauth2/**","/static/**","/register","/js/**","/css/**","/img/**").permitAll()
+                .anyRequest().permitAll()
             .and()
                 .headers().frameOptions().disable()
 //            .and()
@@ -49,12 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth, DataSource dataSource) throws Exception
     {
-        auth.jdbcAuthentication()
-                .dataSource(dataSource)
-                .usersByUsernameQuery("select username,password,enabled from user where username=?")
-                .authoritiesByUsernameQuery("select username,authority from user where username=?")
+        auth
+                .userDetailsService(userService)
                 .passwordEncoder(new BCryptPasswordEncoder());
-//                .withUser(user.username("user").password("password").roles("USER"));
+
     }
 
     @Bean
